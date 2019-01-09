@@ -1,4 +1,3 @@
-
 # LEEAlert - 优雅的Alert ActionSheet
 
 [![](https://img.shields.io/aur/license/yaourt.svg?maxAge=2592000)](https://github.com/lixiang1994/LEEAlert/blob/master/LICENSE)&nbsp;
@@ -327,6 +326,7 @@ Action一般分为3种类型 1. 默认类型 2. 销毁类型(Destructive) 3.取�
 
 许可证
 ==============
+
 LEEAlert 使用 GPL V3 许可证，详情见 LICENSE 文件。
 
 
@@ -339,3 +339,8 @@ LEEAlert 使用 GPL V3 许可证，详情见 LICENSE 文件。
 ==============
 [我的简书](http://www.jianshu.com/users/a6da0db100c8)
 [我的博客](http://www.lee1994.com)
+=======
+
+# LEEAlert
+由于项目需求，修改LEEAlert源码，增加弹窗提示占位图片和弹窗右上角自带关闭按钮
+34576c5ca3ab4b8ce098b061bda454c7676f8e3c
