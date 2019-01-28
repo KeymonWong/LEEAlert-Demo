@@ -369,7 +369,7 @@
 
 @interface LEEAlertConfig : NSObject
 
-@property (nonatomic , strong, nonnull ) LEEAlertConfigModel *config;
+@property (nonatomic , strong) LEEAlertConfigModel *config;
 
 @property (nonatomic , assign ) LEEAlertType type;
 
