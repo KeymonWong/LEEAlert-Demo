@@ -1404,7 +1404,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
     
     if (_view) {
         
-        [_view layoutIfNeeded];
+        [_view layoutSubviews];
         
         _size = _view.frame.size;
         
