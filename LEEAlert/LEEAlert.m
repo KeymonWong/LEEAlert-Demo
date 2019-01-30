@@ -27,7 +27,8 @@
 #define SCREEN_HEIGHT CGRectGetHeight([[UIScreen mainScreen] bounds])
 #define VIEW_WIDTH CGRectGetWidth(self.view.frame)
 #define VIEW_HEIGHT CGRectGetHeight(self.view.frame)
-#define DEFAULTBORDERWIDTH (1.0f / [[UIScreen mainScreen] scale] + 0.02f)
+//!!!:FIXME 修改原作者代码，原因：2个action左右布局时,真机莫名出现action顶部border宽度和中间的border宽度不一致的问题，或者直接定义个1px的DEFAULTBORDERWIDTH
+#define DEFAULTBORDERWIDTH (ceil(1.0 / [[UIScreen mainScreen] scale] * [[UIScreen mainScreen] scale]) / [[UIScreen mainScreen] scale])
 #define VIEWSAFEAREAINSETS(view) ({UIEdgeInsets i; if(@available(iOS 11.0, *)) {i = view.safeAreaInsets;} else {i = UIEdgeInsetsZero;} i;})
 
 #define kDefaultLabelEdgeInsets UIEdgeInsetsMake(5, 0, 5, 0) ///< 默认内容上下inset
