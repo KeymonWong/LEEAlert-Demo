@@ -1886,7 +1886,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
         if (screenScale > 2) {
             screenScale = 3;
         }
-        NSString *imgPath = [imgBundle pathForResource:[NSString stringWithFormat:@"close@%ldx", screenScale] ofType:@"png"];
+        NSString *imgPath = [imgBundle pathForResource:[NSString stringWithFormat:@"close@%ldx", (long)screenScale] ofType:@"png"];
         
         UIImage *image = [UIImage imageWithContentsOfFile:imgPath];
         [btn setBackgroundImage:image forState:UIControlStateNormal];
