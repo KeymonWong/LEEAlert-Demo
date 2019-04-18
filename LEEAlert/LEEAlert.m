@@ -14,6 +14,7 @@
  *  @author LEE
  *  @copyright    Copyright © 2016 - 2018年 lee. All rights reserved.
  *  @version    V1.2.1
+ *  @warning    已经根据OLA项目需求，对本三方弹窗做了修改，详情可以全局搜索"///!!!:自定义需求"，所以不要用cocoapods管理，也不要更新本三方
  */
 
 #import "LEEAlert.h"
@@ -27,15 +28,16 @@
 #define SCREEN_HEIGHT CGRectGetHeight([[UIScreen mainScreen] bounds])
 #define VIEW_WIDTH CGRectGetWidth(self.view.frame)
 #define VIEW_HEIGHT CGRectGetHeight(self.view.frame)
-//!!!:FIXME 修改原作者代码，原因：2个action左右布局时,真机莫名出现action顶部border宽度和中间的border宽度不一致的问题，或者直接定义个1px的DEFAULTBORDERWIDTH
-#define DEFAULTBORDERWIDTH (ceil(1.0 / [[UIScreen mainScreen] scale] * [[UIScreen mainScreen] scale]) / [[UIScreen mainScreen] scale])
+//像素取整,否则2个action左右布局时,真机莫名出现action顶部border宽度和中间的border宽度不一致的问题
+#define DEFAULTBORDERWIDTH flat(1.0f / [UIScreen mainScreen].scale)
+//#define DEFAULTBORDERWIDTH flat(1.0)
 #define VIEWSAFEAREAINSETS(view) ({UIEdgeInsets i; if(@available(iOS 11.0, *)) {i = view.safeAreaInsets;} else {i = UIEdgeInsetsZero;} i;})
 
-#define kDefaultLabelEdgeInsets UIEdgeInsetsMake(5, 0, 5, 0) ///< 默认内容上下inset
+#define kDefaultLabelEdgeInsets UIEdgeInsetsMake(10, 0, 10, 0) ///< 默认内容上下inset
 #define kDefaultCustomViewEdgeInsets UIEdgeInsetsMake(5, 0, 5, 0) ///< 默认自定义view上下inset
 #define kDefaultImageEdgeInsets UIEdgeInsetsMake(10, 0, 10, 0) ///< 默认占位图片上下inset
 #define kDefaultTextFieldEdgeInsets UIEdgeInsetsMake(10, 0, 10, 0) ///< 默认textField上下inset
-#define kDefaultCloseBtnEdgeInsets UIEdgeInsetsMake(10, 10, 10, 10) ///< 默认右上角关闭按钮的inset
+#define kDefaultCloseBtnEdgeInsets UIEdgeInsetsMake(16., 16., 16., 16.) ///< 默认右上角关闭按钮的inset
 
 
 #pragma mark - ===================配置模型===================
@@ -119,11 +121,11 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
         
         // 初始化默认值
         
-        _modelCornerRadius = 13.0f; //默认圆角半径
+        _modelCornerRadius = 10.0f; //默认圆角半径
         _modelShadowOpacity = 0.3f; //默认阴影不透明度
-        _modelShadowRadius = 5.0f; //默认阴影半径
-        _modelShadowOffset = CGSizeMake(0.0f, 2.0f); //默认阴影偏移
-        _modelHeaderInsets = UIEdgeInsetsMake(20.0f, 20.0f, 20.0f, 20.0f); //默认间距
+        _modelShadowRadius = 0.0f; //默认阴影半径
+        _modelShadowOffset = CGSizeMake(0.0f, 0.0f); //默认阴影偏移
+        _modelHeaderInsets = UIEdgeInsetsMake(20.0f, 15.0f, 20.0f, 15.0f); //默认间距
         _modelOpenAnimationDuration = 0.3f; //默认打开动画时长
         _modelCloseAnimationDuration = 0.2f; //默认关闭动画时长
         _modelBackgroundStyleColorAlpha = 0.45f; //自定义背景样式颜色透明度 默认为半透明背景样式 透明度为0.45f
@@ -157,31 +159,19 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
         
         _modelOpenAnimationConfigBlock = ^(void (^animatingBlock)(void), void (^animatedBlock)(void)) {
             
-            ///!!!:自定义需求
-            [UIView animateWithDuration:weakSelf.modelOpenAnimationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:20 options:UIViewAnimationOptionCurveLinear animations:^{
+            [UIView animateWithDuration:weakSelf.modelOpenAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 if (animatingBlock) animatingBlock();
             } completion:^(BOOL finished) {
                 if (animatedBlock) animatedBlock();
             }];
-//        options:UIViewAnimationOptionCurveEaseInOut animations:^{
-//
-//
-//
-//            } completion:^(BOOL finished) {
-//
-//
-//            }];
             
         };
         
         _modelCloseAnimationConfigBlock = ^(void (^animatingBlock)(void), void (^animatedBlock)(void)) {
             
-            [UIView animateWithDuration:weakSelf.modelCloseAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                
+            [UIView animateWithDuration:weakSelf.modelCloseAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 if (animatingBlock) animatingBlock();
-                
             } completion:^(BOOL finished) {
-                
                 if (animatedBlock) animatedBlock();
             }];
             
@@ -269,7 +259,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
             
             action.title = title;
             
-            action.font = [UIFont boldSystemFontOfSize:18.0f];
+            action.font = [UIFont boldSystemFontOfSize:17.0f];
             
             action.clickBlock = block;
         });
@@ -1728,10 +1718,10 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
     ///!!!:自定义需求
     // 在 containerView 的 frame 确定之后, 再布局右上角关闭按钮的位置
     if (self.config.modelIsShouldShowCloseBtn) {
-        CGSize size = _closeBtn.currentBackgroundImage.size;
-        CGFloat x = self.containerView.frame.size.width - size.width - kDefaultCloseBtnEdgeInsets.right;
+        CGSize size = _closeBtn.currentImage.size;
+        CGFloat x = self.containerView.frame.size.width - size.width - kDefaultCloseBtnEdgeInsets.right - 10.;
         CGFloat y = kDefaultCloseBtnEdgeInsets.top;
-        [_closeBtn setFrame:CGRectMake(x, y, size.width, size.height)];
+        [_closeBtn setFrame:CGRectMake(x, y, size.width+10., size.height+10.)];
     }
 }
 
@@ -1759,7 +1749,9 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
             
             viewFrame.size.width = alertViewMaxWidth - viewFrame.origin.x - self.config.modelHeaderInsets.right - view.item.insets.right - VIEWSAFEAREAINSETS(view).left - VIEWSAFEAREAINSETS(view).right;
             
-            if ([item isKindOfClass:UILabel.class]) viewFrame.size.height = [item sizeThatFits:CGSizeMake(viewFrame.size.width, MAXFLOAT)].height;
+            if ([item isKindOfClass:UILabel.class]) {
+                viewFrame.size.height = [item sizeThatFits:CGSizeMake(viewFrame.size.width, MAXFLOAT)].height;
+            }
             
             ///!!!:自定义需求
             //占位提示图片
@@ -1877,8 +1869,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
     //添加右上角关闭按钮
     [_containerView addSubview:({
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.contentMode = UIViewContentModeScaleAspectFill;
-        btn.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        btn.contentMode = UIViewContentModeScaleAspectFit;
         
         NSBundle *bundleName = [NSBundle bundleForClass:[LEEAlert class]];
         NSURL *url = [bundleName URLForResource:@"LEEAlert" withExtension:@"bundle"];
@@ -1890,7 +1881,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
         NSString *imgPath = [imgBundle pathForResource:[NSString stringWithFormat:@"close@%ldx", (long)screenScale] ofType:@"png"];
         
         UIImage *image = [UIImage imageWithContentsOfFile:imgPath];
-        [btn setBackgroundImage:image forState:UIControlStateNormal];
+        [btn setImage:image forState:UIControlStateNormal];
         btn.adjustsImageWhenHighlighted = NO;
         [btn addTarget:self action:@selector(closeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_containerView bringSubviewToFront:btn];
@@ -1950,7 +1941,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
                 
                 label.textAlignment = NSTextAlignmentCenter;
                 
-                label.font = [UIFont boldSystemFontOfSize:18.0f];
+                label.font = [UIFont boldSystemFontOfSize:17.0f];
                 
                 label.textColor = [UIColor blackColor];
                 
@@ -2324,7 +2315,9 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
         
         weakSelf.containerView.frame = containerFrame;
         
-        if (weakSelf.config.modelCloseAnimationStyle & LEEAnimationStyleFade) weakSelf.containerView.alpha = 0.0f;
+        if (weakSelf.config.modelCloseAnimationStyle & LEEAnimationStyleFade) {
+            weakSelf.containerView.alpha = 0.0f;
+        }
         
         if (weakSelf.config.modelCloseAnimationStyle & LEEAnimationStyleZoomEnlarge) weakSelf.containerView.transform = CGAffineTransformMakeScale(1.2f , 1.2f);
         
@@ -2497,7 +2490,9 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
             
             viewFrame.size.width = actionSheetViewMaxWidth - viewFrame.origin.x - self.config.modelHeaderInsets.right - view.item.insets.right - VIEWSAFEAREAINSETS(view).left - VIEWSAFEAREAINSETS(view).right;
             
-            if ([item isKindOfClass:UILabel.class]) viewFrame.size.height = [item sizeThatFits:CGSizeMake(viewFrame.size.width, MAXFLOAT)].height;
+            if ([item isKindOfClass:UILabel.class]) {
+                viewFrame.size.height = [item sizeThatFits:CGSizeMake(viewFrame.size.width, MAXFLOAT)].height;
+            }
             
             view.frame = viewFrame;
             
@@ -3207,6 +3202,8 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
     return self;
 }
 
+#define kAlertMaxWidth 290
+
 - (void)setType:(LEEAlertType)type{
     
     _type = type;
@@ -3220,7 +3217,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
             self.config
             .LeeConfigMaxWidth(^CGFloat(LEEScreenOrientationType type) {
                 
-                return 280.0f;
+                return kAlertMaxWidth;
             })
             .LeeConfigMaxHeight(^CGFloat(LEEScreenOrientationType type) {
                 

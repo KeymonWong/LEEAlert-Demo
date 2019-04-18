@@ -14,6 +14,7 @@
  *  @author LEE
  *  @copyright    Copyright © 2016 - 2018年 lee. All rights reserved.
  *  @version    V1.2.1
+ *  @warning    已经根据OLA项目需求，对本三方弹窗做了修改，详情可以全局搜索"///!!!:自定义需求"，所以不要用cocoapods管理，也不要更新本三方
  */
 
 #import <Foundation/Foundation.h>
@@ -151,7 +152,7 @@
 /** 设置 设置最大高度 -> 格式: .LeeConfigMaxHeight(CGFloat(^)(^CGFloat(LEEScreenOrientationType type) { return 600.0f; }) */
 @property (nonatomic , copy , readonly ) LEEConfigToFloatBlock LeeConfigMaxHeight;
 
-/** 设置 圆角半径 -> 格式: .LeeCornerRadius(13.0f) */
+/** 设置 圆角半径 -> 格式: .LeeCornerRadius(10.0f) */
 @property (nonatomic , copy , readonly ) LEEConfigToFloat LeeCornerRadius;
 
 /** 设置 开启动画时长 -> 格式: .LeeOpenAnimationDuration(0.3f) */
@@ -371,7 +372,7 @@
 
 @property (nonatomic , strong) LEEAlertConfigModel *config;
 
-@property (nonatomic , assign ) LEEAlertType type;
+@property (nonatomic , assign) LEEAlertType type;
 
 @end
 

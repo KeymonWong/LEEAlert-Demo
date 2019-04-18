@@ -14,6 +14,7 @@
  *  @author LEE
  *  @copyright    Copyright © 2016 - 2018年 lee. All rights reserved.
  *  @version    V1.2.1
+ *  @warning    已经根据OLA项目需求，对本三方弹窗做了修改，详情可以全局搜索"///!!!:自定义需求"，所以不要用cocoapods管理，也不要更新本三方
  */
 
 #ifndef LEEAlertHelper_h
