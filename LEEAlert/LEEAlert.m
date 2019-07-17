@@ -138,7 +138,7 @@ typedef NS_ENUM(NSInteger, LEEBackgroundStyle) {
         _modelActionSheetBackgroundColor = [UIColor clearColor]; //默认actionsheet背景颜色
         _modelActionSheetCancelActionSpaceColor = [UIColor clearColor]; //默认actionsheet取消按钮间隔颜色
         _modelActionSheetCancelActionSpaceWidth = 10.0f; //默认actionsheet取消按钮间隔宽度
-        _modelActionSheetBottomMargin = iPhoneX_Style ? 34.0 : 10.0; //默认actionsheet距离屏幕底部距离
+        _modelActionSheetBottomMargin = 10.0; //默认actionsheet距离屏幕底部距离
         
         _modelShadowColor = [UIColor blackColor]; //默认阴影颜色
         _modelHeaderColor = [UIColor whiteColor]; //默认颜色
